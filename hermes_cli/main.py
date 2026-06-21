@@ -8237,7 +8237,7 @@ def cmd_update(args):
     print("✗ Automatic updates are not available in the Gaia Agent fork.")
     print()
     print("  To update, pull from the Gaia repository directly:")
-    print("    git pull origin gaia-v0.17.0")
+    print("    git pull origin main")
     print()
     print("  To check for upstream NousResearch changes to merge manually:")
     print("    git fetch upstream")
