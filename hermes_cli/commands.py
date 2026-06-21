@@ -1097,7 +1097,7 @@ def slack_native_slashes() -> list[tuple[str, str, str]]:
     seen: set[str] = set()
 
     # Reserve /hermes as the catch-all top-level command.
-    entries.append(("hermes", "Talk to Hermes or run a subcommand", "[subcommand] [args]"))
+    entries.append(("hermes", "Talk to Gaia or run a subcommand", "[subcommand] [args]"))
     seen.add("hermes")
 
     def _add(name: str, desc: str, hint: str) -> None:

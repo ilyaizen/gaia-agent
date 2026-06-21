@@ -17,8 +17,8 @@ from hermes_cli.completion import _walk, generate_bash, generate_zsh, generate_f
 # ---------------------------------------------------------------------------
 
 def _make_parser() -> argparse.ArgumentParser:
-    """Build a minimal parser that mirrors the real hermes structure."""
-    p = argparse.ArgumentParser(prog="hermes")
+    """Build a minimal parser that mirrors the real gaia structure."""
+    p = argparse.ArgumentParser(prog="gaia")
     p.add_argument("--version", "-V", action="store_true")
     p.add_argument("-p", "--profile", help="Profile name")
     sub = p.add_subparsers(dest="command")
@@ -94,8 +94,8 @@ class TestWalk:
 class TestGenerateBash:
     def test_contains_completion_function_and_register(self):
         out = generate_bash(_make_parser())
-        assert "_hermes_completion()" in out
-        assert "complete -F _hermes_completion hermes" in out
+        assert "_gaia_completion()" in out
+        assert "complete -F _gaia_completion gaia" in out
 
     def test_top_level_commands_present(self):
         out = generate_bash(_make_parser())
@@ -127,7 +127,7 @@ class TestGenerateBash:
 class TestGenerateZsh:
     def test_contains_compdef_header(self):
         out = generate_zsh(_make_parser())
-        assert "#compdef hermes" in out
+        assert "#compdef gaia" in out
 
     def test_top_level_commands_present(self):
         out = generate_zsh(_make_parser())
@@ -142,14 +142,14 @@ class TestGenerateZsh:
 
     def test_registers_compdef_instead_of_invoking_completion_function(self):
         out = generate_zsh(_make_parser())
-        assert 'compdef _hermes hermes' in out
+        assert 'compdef _gaia gaia' in out
         assert '_hermes "$@"' not in out
 
     def test_preserves_valid_zsh_arguments_alias_syntax(self):
         out = generate_zsh(_make_parser())
         assert "'(-)'{-h,--help}'[Show help and exit]'" in out
         assert "'(-)'{-V,--version}'[Show version and exit]'" in out
-        assert "'(-)'{-p,--profile}'[Profile name]:profile:_hermes_profiles'" in out
+        assert "'(-)'{-p,--profile}'[Profile name]:profile:_gaia_profiles'" in out
         assert "'(-h --help){-h,--help}[Show help and exit]'" not in out
         assert '"(-h --help)"{-h,--help}"[Show help and exit]"' not in out
 
@@ -178,7 +178,7 @@ class TestGenerateZsh:
                 [
                     "zsh",
                     "-fc",
-                    f"autoload -Uz compinit && compinit -D; source {path}; [[ ${{_comps[hermes]}} == _hermes ]]",
+                    f"autoload -Uz compinit && compinit -D; source {path}; [[ ${{_comps[gaia]}} == _gaia ]]",
                 ],
                 capture_output=True,
                 text=True,
@@ -196,7 +196,7 @@ class TestGenerateZsh:
 class TestGenerateFish:
     def test_disables_file_completion(self):
         out = generate_fish(_make_parser())
-        assert "complete -c hermes -f" in out
+        assert "complete -c gaia -f" in out
 
     def test_top_level_commands_present(self):
         out = generate_fish(_make_parser())

@@ -1,46 +1,46 @@
 #!/usr/bin/env python3
 """
-Hermes CLI - Main entry point.
+Gaia CLI - Main entry point.
 
 Usage:
-    hermes                     # Interactive chat (default)
-    hermes chat                # Interactive chat
-    hermes gateway             # Run gateway in foreground
-    hermes gateway start       # Start gateway as service
-    hermes gateway stop        # Stop gateway service
-    hermes gateway status      # Show gateway status
-    hermes gateway install     # Install gateway service
-    hermes gateway uninstall   # Uninstall gateway service
-    hermes setup               # Interactive setup wizard
-    hermes logout              # Clear stored authentication
-    hermes status              # Show status of all components
-    hermes cron                # Manage cron jobs
-    hermes cron list           # List cron jobs
-    hermes cron status         # Check if cron scheduler is running
-    hermes doctor              # Check configuration and dependencies
-    hermes honcho setup                    # Configure Honcho AI memory integration
-    hermes honcho status                   # Show Honcho config and connection status
-    hermes honcho sessions                 # List directory → session name mappings
-    hermes honcho map <name>               # Map current directory to a session name
-    hermes honcho peer                     # Show peer names and dialectic settings
-    hermes honcho peer --user NAME         # Set user peer name
-    hermes honcho peer --ai NAME           # Set AI peer name
-    hermes honcho peer --reasoning LEVEL   # Set dialectic reasoning level
-    hermes honcho mode                     # Show current memory mode
-    hermes honcho mode [hybrid|honcho|local]  # Set memory mode
-    hermes honcho tokens                   # Show token budget settings
-    hermes honcho tokens --context N       # Set session.context() token cap
-    hermes honcho tokens --dialectic N     # Set dialectic result char cap
-    hermes honcho identity                 # Show AI peer identity representation
-    hermes honcho identity <file>          # Seed AI peer identity from a file (SOUL.md etc.)
-    hermes honcho migrate                  # Step-by-step migration guide: OpenClaw native → Hermes + Honcho
-    hermes version             Show version
-    hermes update              Update to latest version
-    hermes uninstall           Uninstall Gaia Agent
-    hermes acp                 Run as an ACP server for editor integration
-    hermes sessions browse     Interactive session picker with search
+    gaia                       # Interactive chat (default)
+    gaia chat                  # Interactive chat
+    gaia gateway               # Run gateway in foreground
+    gaia gateway start         # Start gateway as service
+    gaia gateway stop          # Stop gateway service
+    gaia gateway status        # Show gateway status
+    gaia gateway install       # Install gateway service
+    gaia gateway uninstall     # Uninstall gateway service
+    gaia setup                 # Interactive setup wizard
+    gaia logout                # Clear stored authentication
+    gaia status                # Show status of all components
+    gaia cron                  # Manage cron jobs
+    gaia cron list             # List cron jobs
+    gaia cron status           # Check if cron scheduler is running
+    gaia doctor                # Check configuration and dependencies
+    gaia honcho setup                    # Configure Honcho AI memory integration
+    gaia honcho status                   # Show Honcho config and connection status
+    gaia honcho sessions                 # List directory → session name mappings
+    gaia honcho map <name>               # Map current directory to a session name
+    gaia honcho peer                     # Show peer names and dialectic settings
+    gaia honcho peer --user NAME         # Set user peer name
+    gaia honcho peer --ai NAME           # Set AI peer name
+    gaia honcho peer --reasoning LEVEL   # Set dialectic reasoning level
+    gaia honcho mode                     # Show current memory mode
+    gaia honcho mode [hybrid|honcho|local]  # Set memory mode
+    gaia honcho tokens                   # Show token budget settings
+    gaia honcho tokens --context N       # Set session.context() token cap
+    gaia honcho tokens --dialectic N     # Set dialectic result char cap
+    gaia honcho identity                 # Show AI peer identity representation
+    gaia honcho identity <file>          # Seed AI peer identity from a file (SOUL.md etc.)
+    gaia honcho migrate                  # Step-by-step migration guide: OpenClaw native → Gaia + Honcho
+    gaia version               Show version
+    gaia update                Update to latest version
+    gaia uninstall             Uninstall Gaia Agent
+    gaia acp                   Run as an ACP server for editor integration
+    gaia sessions browse       Interactive session picker with search
 
-    hermes claw migrate --dry-run  # Preview migration without changes
+    gaia claw migrate --dry-run  # Preview migration without changes
 """
 
 # IMPORTANT: hermes_bootstrap must be the very first import — it sets up
@@ -49,12 +49,12 @@ Usage:
 #
 # Guarded against ModuleNotFoundError because ``hermes_bootstrap`` is a
 # top-level module registered via pyproject.toml's ``py-modules`` list.
-# When the user upgrades code via ``git pull`` (or ``hermes update``
+# When the user upgrades code via ``git pull`` (or ``gaia update``
 # crashes between ``git reset --hard`` and ``uv pip install -e .``), the
 # new code references ``hermes_bootstrap`` but the editable install's
 # ``.pth`` file still points at the old set of top-level modules.  Without
-# this guard, hermes crashes on import and the user can't run
-# ``hermes update`` to recover.  Missing the bootstrap means UTF-8 stdio
+# this guard, gaia crashes on import and the user can't run
+# ``gaia update`` to recover.  Missing the bootstrap means UTF-8 stdio
 # setup is skipped on Windows — degraded, not broken.  POSIX is unaffected.
 try:
     import hermes_bootstrap  # noqa: F401
@@ -66,24 +66,24 @@ import sys
 
 
 def _set_process_title() -> None:
-    """Set the process title to 'hermes' so tools like 'ps', 'top', and
+    """Set the process title to 'gaia' so tools like 'ps', 'top', and
     'htop' show the app name instead of 'python3.xx'.
 
     Purely cosmetic — non-fatal on any platform.
 
     Strategy (try in order):
-      1. ``setproctitle`` (opt-in dep — installed via ``hermes tools`` or
+      1. ``setproctitle`` (opt-in dep — installed via ``gaia tools`` or
          ``pip install setproctitle``, or bundled in a future release).
       2. ctypes ``prctl(PR_SET_NAME)`` (Linux only, 15-char limit).
       3. ctypes ``pthread_setname_np`` (macOS only, kernel thread name —
          changes lldb/top but not ``ps aux``).
-      4. No-op on Windows (the .exe name is already ``hermes.exe``).
+      4. No-op on Windows (the .exe name is already ``gaia.exe``).
     """
     # Strategy 1: setproctitle (best — works on macOS, Linux, BSD)
     try:
         import setproctitle  # type: ignore[import-untyped]
 
-        setproctitle.setproctitle("hermes")
+        setproctitle.setproctitle("gaia")
         return
     except ImportError:
         pass
@@ -96,11 +96,11 @@ def _set_process_title() -> None:
         system = platform.system()
         if system == "Linux":
             libc = ctypes.CDLL("libc.so.6", use_errno=True)
-            libc.prctl(15, b"hermes", 0, 0, 0)  # PR_SET_NAME = 15
+            libc.prctl(15, b"gaia", 0, 0, 0)  # PR_SET_NAME = 15
         elif system == "Darwin":
             libc = ctypes.CDLL("libc.dylib", use_errno=True)
-            libc.pthread_setname_np(b"hermes")
-        # Windows: the .exe name is already ``hermes.exe`` — nothing to do.
+            libc.pthread_setname_np(b"gaia")
+        # Windows: the .exe name is already ``gaia.exe`` — nothing to do.
     except Exception:
         pass
 
@@ -311,7 +311,7 @@ def _require_tty(command_name: str) -> None:
     """
     if not sys.stdin.isatty():
         print(
-            f"Error: 'hermes {command_name}' requires an interactive terminal.\n"
+            f"Error: 'gaia {command_name}' requires an interactive terminal.\n"
             f"It cannot be run through a pipe or non-interactive subprocess.\n"
             f"Run it directly in your terminal instead.",
             file=sys.stderr,
@@ -1225,14 +1225,14 @@ def _exec_in_container(container_info: dict, cli_args: list):
                     f'    commands = [{{ command = "{runtime}"; options = [ "NOPASSWD" ]; }}];\n'
                     f"  }}];\n"
                     f"\n"
-                    f"Or run: sudo hermes {' '.join(cli_args)}",
+                    f"Or run: sudo gaia {' ' .join(cli_args)}",
                     file=sys.stderr,
                 )
                 sys.exit(1)
         else:
             print(
                 f"Error: container '{container_name}' not found via {backend}.\n"
-                f"The container may be running under root. Try: sudo hermes {' '.join(cli_args)}",
+                f"The container may be running under root. Try: sudo gaia {' ' .join(cli_args)}",
                 file=sys.stderr,
             )
             sys.exit(1)
@@ -1356,9 +1356,9 @@ def _print_tui_exit_summary(
 
     print()
     print("Resume this session with:")
-    print(f"  hermes --tui --resume {target}")
+    print(f"  gaia --tui --resume {target}")
     if title:
-        print(f'  hermes --tui -c "{title}"')
+        print(f'  gaia --tui -c "{title}"')
     print()
     print(f"Session:        {target}")
     if title:
@@ -2156,7 +2156,7 @@ def cmd_chat(args):
                 args.resume = resolved
             else:
                 print(f"No session found matching '{continue_val}'.")
-                print("Use 'hermes sessions list' to see available sessions.")
+                print("Use 'gaia sessions list' to see available sessions.")
                 sys.exit(1)
         else:
             # -c with no argument — continue the most recent session
@@ -2199,7 +2199,7 @@ def cmd_chat(args):
             for _ref in _retired_xai_refs:
                 sys.stderr.write(f"  \033[33m⚠\033[0m {format_issue(_ref)}\n")
             sys.stderr.write(f"  \033[2mMigration guide: {MIGRATION_GUIDE_URL}\033[0m\n")
-            sys.stderr.write("  \033[2mRun 'hermes doctor' for details.\033[0m\n\n")
+            sys.stderr.write("  \033[2mRun 'gaia doctor' for details.\033[0m\n\n")
     except Exception:
         pass
 
@@ -2210,7 +2210,7 @@ def cmd_chat(args):
             "It looks like Hermes isn't configured yet -- no API keys or providers found."
         )
         print()
-        print("  Run:  hermes setup")
+        print("  Run:  gaia setup")
         print()
 
         from hermes_cli.setup import (
@@ -2232,7 +2232,7 @@ def cmd_chat(args):
             cmd_setup(args)
             return
         print()
-        print("You can run 'hermes setup' at any time to configure.")
+        print("You can run 'gaia setup' at any time to configure.")
         sys.exit(1)
 
     # Start update check in background (runs while other init happens).
@@ -2528,7 +2528,7 @@ def cmd_whatsapp(args):
             if (get_env_value("WHATSAPP_ENABLED") or "").lower() != "true":
                 save_env_value("WHATSAPP_ENABLED", "true")
             print("\n✓ WhatsApp is configured and paired!")
-            print("  Start the gateway with: hermes gateway")
+            print("  Start the gateway with: gaia gateway")
             return
 
     # ── Step 6: QR code pairing ──────────────────────────────────────────
@@ -2564,23 +2564,23 @@ def cmd_whatsapp(args):
         print()
         if wa_mode == "bot":
             print("  Next steps:")
-            print("    1. Start the gateway:  hermes gateway")
+            print("    1. Start the gateway:  gaia gateway")
             print("    2. Send a message to the bot's WhatsApp number")
             print("    3. The agent will reply automatically")
             print()
             print("  Tip: Agent responses are prefixed with '⚕ Gaia Agent'")
         else:
             print("  Next steps:")
-            print("    1. Start the gateway:  hermes gateway")
+            print("    1. Start the gateway:  gaia gateway")
             print("    2. Open WhatsApp → Message Yourself")
             print("    3. Type a message — the agent will reply")
             print()
             print("  Tip: Agent responses are prefixed with '⚕ Gaia Agent'")
             print("  so you can tell them apart from your own messages.")
         print()
-        print("  Or install as a service: hermes gateway install")
+        print("  Or install as a service: gaia gateway install")
     else:
-        print("⚠ Pairing may not have completed. Run 'hermes whatsapp' to try again.")
+        print("⚠ Pairing may not have completed. Run 'gaia whatsapp' to try again.")
 
 
 def cmd_whatsapp_cloud(args):
@@ -2854,8 +2854,8 @@ def select_provider_and_model(args=None):
             active = active_def.id
         else:
             warning = (
-                f"Unknown provider '{effective_provider}'. Check 'hermes model' for "
-                "available providers, or run 'hermes doctor' to diagnose config "
+                f"Unknown provider '{effective_provider}'. Check 'gaia model' for "
+                "available providers, or run 'gaia doctor' to diagnose config "
                 "issues."
             )
             print(f"Warning: {warning} Falling back to auto provider detection.")
@@ -3975,7 +3975,7 @@ def _prompt_api_key(pconfig, existing_key: str, provider_id: str = "") -> tuple:
     if choice.startswith("c"):
         save_env_value(key_env, "")
         print(
-            f"  API key cleared.  Re-run `hermes setup` to configure {pconfig.name} again."
+            f"  API key cleared.  Re-run `gaia setup` to configure {pconfig.name} again."
         )
         return "", True
 
@@ -4089,7 +4089,7 @@ def _run_anthropic_oauth_flow(save_env_value):
         print("    1. Install Claude Code:  npm install -g @anthropic-ai/claude-code")
         print("    2. Run:                  claude setup-token")
         print("    3. Follow the browser prompts to authorize")
-        print("    4. Re-run:               hermes model")
+        print("    4. Re-run:               gaia model")
         print()
         print("  Or paste an existing setup-token now (sk-ant-oat-...):")
         print()
@@ -4163,13 +4163,13 @@ def cmd_slack(args):
     if sub in {None, ""}:
         # No subcommand — print usage hint.
         print(
-            "usage: hermes slack <subcommand>\n"
+            "usage: gaia slack <subcommand>\n"
             "\n"
             "subcommands:\n"
             "  manifest   Generate a Slack app manifest with every gateway\n"
             "             command registered as a native slash\n"
             "\n"
-            "Run `hermes slack manifest -h` for details.",
+            "Run `gaia slack manifest -h` for details.",
             file=sys.stderr,
         )
         return 1
@@ -5507,8 +5507,8 @@ def _print_curator_first_run_notice() -> None:
         f"~{days}d after installation; only agent-created skills are in "
         f"scope and nothing is ever auto-deleted (archive is recoverable)."
     )
-    print("  Preview now:  hermes curator run --dry-run")
-    print("  Pause it:     hermes curator pause")
+    print("  Preview now:  gaia curator run --dry-run")
+    print("  Pause it:     gaia curator pause")
     print(
         "  Docs:         https://hermes-agent.nousresearch.com/docs/user-guide/features/curator"
     )
@@ -5569,7 +5569,7 @@ def _print_curator_recent_run_notice() -> None:
         print(f"  {line}")
     print(
         "  (This message shows once per curator run. "
-        "View anytime: hermes curator status)"
+        "View anytime: gaia curator status)"
     )
 
     # Stamp shown so we don't repeat on the next update.
@@ -5716,7 +5716,7 @@ def _kill_stale_dashboard_processes(
 
     if killed:
         print("  Restart the dashboard when you're ready:")
-        print("    hermes dashboard --port <port>")
+        print("    gaia dashboard --port <port>")
 
 
 # Back-compat alias: some tests and any external callers may import the old
@@ -5749,8 +5749,8 @@ def _update_via_zip(args):
         print(
             "  This path runs when git file I/O is broken on the system. "
             "Either resolve the git-side breakage (typically an antivirus "
-            "or NTFS filter holding files open) and rerun `hermes update "
-            f"--branch {branch}`, or update against main with `hermes update`."
+            "or NTFS filter holding files open) and rerun `gaia update "
+            f"--branch {branch}`, or update against main with `gaia update`."
         )
         sys.exit(1)
     zip_url = (
