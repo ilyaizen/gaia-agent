@@ -1982,7 +1982,7 @@ class HermesACPAgent(acp.Agent):
         return f"Queued for the next turn. ({depth} queued)"
 
     def _cmd_version(self, args: str, state: SessionState) -> str:
-        return f"Hermes Agent v{HERMES_VERSION}"
+        return f"Gaia Agent v{HERMES_VERSION}"
 
     # ---- Model switching (ACP protocol method) -------------------------------
 
