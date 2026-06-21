@@ -228,7 +228,7 @@ def _print_fast_version_info() -> None:
     from hermes_cli import __release_date__, __version__
 
     project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir))
-    print(f"Hermes Agent v{__version__} ({__release_date__})")
+    print(f"Gaia Agent v{__version__} ({__release_date__})")
     print(f"Project: {project_root}")
     print(f"Python: {sys.version.split()[0]}")
 
@@ -5377,11 +5377,9 @@ def _desktop_linux_sandbox_fixup(packaged_executable: Path) -> bool:
 
 def cmd_gui(args: argparse.Namespace):
     """Stub — Electron desktop app is not part of the Gaia fork."""
-    print("
-  Gaia fork: the Electron desktop app has been stripped.")
+    print("\n  Gaia fork: the Electron desktop app has been stripped.")
     print("  Use the CLI (gaia) or messaging gateway (gaia gateway) instead.")
-    print("  For the full desktop experience, use upstream hermes-agent.
-")
+    print("  For the full desktop experience, use upstream hermes-agent.\n")
     sys.exit(0)
 
 def _find_stale_dashboard_pids(
