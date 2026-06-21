@@ -210,7 +210,10 @@ jobs:
       - name: Packaged-wheel i18n smoke test
         run: |
           source .venv/bin/activate
-          python -m pytest -m integration tests/test_wheel_locales_e2e.py -v
+          # pyproject.toml sets `addopts = "-m 'not integration'"` for the
+          # normal test suite, so we must neutralize it here or pytest will
+          # intersect the two markers and deselect these smoke tests.
+          python -m pytest -o addopts="" -m integration tests/test_wheel_locales_e2e.py -v
 
       - name: Run e2e tests
         run: |

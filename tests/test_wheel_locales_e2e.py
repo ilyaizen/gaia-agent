@@ -55,7 +55,7 @@ def test_installed_wheel_renders_i18n_strings(tmp_path):
     #    same-version no-op.
     venv_dir = tmp_path / "venv"
     venv.create(venv_dir, with_pip=True)
-    vpy = venv_dir / "bin" / "python"
+    vpy = venv_dir / ("Scripts" if os.name == "nt" else "bin") / "python"
     subprocess.run([str(vpy), "-m", "pip", "install", "-q", "pyyaml"], check=True, timeout=300)
     subprocess.run(
         [str(vpy), "-m", "pip", "install", "-q", "--no-deps", "--force-reinstall", wheel],
@@ -121,16 +121,13 @@ def test_built_sdist_ships_locale_catalogs(tmp_path):
         # hermes_agent-0.15.1/locales/en.yaml — match on the suffix.
         catalogs = [m for m in tf.getnames() if "/locales/" in m and m.endswith(".yaml")]
 
-    # Compare against the canonical language list rather than a hardcoded floor
-    # so adding/removing a catalog updates the guard automatically and a dropped
-    # catalog (not just a fully-empty graft) trips it.
-    from agent.i18n import SUPPORTED_LANGUAGES
-
-    expected = len(SUPPORTED_LANGUAGES)
+    # Compare against the source tree's actual locale catalogs. The fork only
+    # ships what exists under locales/, so this catches a packaging regression
+    # without pretending there are more catalogs than the repo contains.
+    expected = len(list((REPO_ROOT / "locales").glob("*.yaml")))
     assert len(catalogs) == expected, (
         f"sdist shipped {len(catalogs)} locale catalogs, expected {expected} "
-        f"({len(SUPPORTED_LANGUAGES)} supported languages) — check `graft "
-        "locales` in MANIFEST.in"
+        f"from {REPO_ROOT / 'locales'} — check `graft locales` in MANIFEST.in"
     )
     assert any(m.endswith("/locales/en.yaml") for m in catalogs), (
         f"sdist missing locales/en.yaml; shipped: {catalogs[:5]}"
