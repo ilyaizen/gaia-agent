@@ -4279,25 +4279,9 @@ def _print_version_info(*, check_updates: bool = True) -> None:
     except ImportError:
         print("OpenAI SDK: Not installed")
 
-    if not check_updates:
-        return
-
-    # Show update status (synchronous — acceptable since user asked for version info)
-    try:
-        from hermes_cli.banner import check_for_updates
-        from hermes_cli.config import recommended_update_command
-
-        behind = check_for_updates()
-        if behind and behind > 0:
-            commits_word = "commit" if behind == 1 else "commits"
-            print(
-                f"Update available: {behind} {commits_word} behind — "
-                f"run '{recommended_update_command()}'"
-            )
-        elif behind == 0:
-            print("Up to date")
-    except Exception:
-        pass
+    # --- Gaia fork: update check disabled — no auto-update mechanism ---
+    # The upstream check_for_updates() counts commits behind NousResearch/main,
+    # which is misleading for the Gaia fork. Update via git pull directly.
 
 
 def cmd_version(args):
@@ -8245,51 +8229,19 @@ def _discard_lockfile_churn(git_cmd, repo_root):
 def cmd_update(args):
     """Update Gaia Agent to the latest version.
 
-    Thin wrapper around ``_cmd_update_impl``: installs hangup protection,
-    runs the update, then restores stdio on the way out (even on
-    ``sys.exit`` or unhandled exceptions).
+    NOTE: In the Gaia Agent fork, automatic updates are disabled because
+    the upstream NousResearch/hermes-agent update mechanism would overwrite
+    Gaia-specific changes.  To update Gaia Agent, use git pull from the
+    Gaia repository directly.
     """
-    from hermes_cli.config import (
-        detect_install_method,
-        format_docker_update_message,
-        is_managed,
-        managed_error,
-    )
-
-    if is_managed():
-        managed_error("update Gaia Agent")
-        return
-
-    # Docker users can't ``git pull`` — the image excludes ``.git`` from
-    # the build context.  Bail with a friendly explanation pointing at
-    # ``docker pull`` BEFORE any of the apply-path / check-path branches
-    # below get a chance to error out with misleading "Not a git
-    # repository" text.  See format_docker_update_message() for the full
-    # rationale and tag-pinning / config-persistence notes.
-    if detect_install_method(PROJECT_ROOT) == "docker":
-        print(format_docker_update_message())
-        sys.exit(1)
-
-    if getattr(args, "check", False):
-        # --check honors --branch so the "any new commits?" answer matches
-        # what a subsequent `hermes update --branch=<x>` would actually pull.
-        branch = _resolve_update_branch(args)
-        _cmd_update_check(
-            branch=branch,
-            branch_explicit=bool(getattr(args, "branch", None)),
-        )
-        return
-
-    gateway_mode = getattr(args, "gateway", False)
-
-    # Protect against mid-update terminal disconnects (SIGHUP) and tolerate
-    # writes to a closed stdout.  No-op in gateway mode.  See
-    # _install_hangup_protection for rationale.
-    _update_io_state = _install_hangup_protection(gateway_mode=gateway_mode)
-    try:
-        _cmd_update_impl(args, gateway_mode=gateway_mode)
-    finally:
-        _finalize_update_output(_update_io_state)
+    print("✗ Automatic updates are not available in the Gaia Agent fork.")
+    print()
+    print("  To update, pull from the Gaia repository directly:")
+    print("    git pull origin gaia-v0.17.0")
+    print()
+    print("  To check for upstream NousResearch changes to merge manually:")
+    print("    git fetch upstream")
+    sys.exit(1)
 
 
 def _cmd_update_pip(args):

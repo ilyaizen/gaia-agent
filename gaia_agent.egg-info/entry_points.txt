@@ -1,0 +1,4 @@
+[console_scripts]
+gaia = gaia_cli.main:main
+gaia-acp = acp_adapter.entry:main
+gaia-agent = run_agent:main

@@ -1,0 +1,235 @@
+{
+  "main": {
+    "id": "729c37fd1c475aa7",
+    "type": "split",
+    "children": [
+      {
+        "id": "2d9d447cec907c33",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "3fc9c894bfb53f74",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "README.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "README"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "01862899158430f7",
+    "type": "split",
+    "children": [
+      {
+        "id": "36298a503dcde083",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "a54d5520e2dfcead",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Files"
+            }
+          },
+          {
+            "id": "269357a81778d7a6",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Search"
+            }
+          },
+          {
+            "id": "de879ce57de7c855",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Bookmarks"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "5b420fc35d66ce98",
+    "type": "split",
+    "children": [
+      {
+        "id": "4dfe1890ca3b7b80",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "3eda5e5adfeb9f89",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "README.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Backlinks for README"
+            }
+          },
+          {
+            "id": "aa49f8c25dabf0e9",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "README.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Outgoing links from README"
+            }
+          },
+          {
+            "id": "b2ff6e344956e5e6",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "Tags"
+            }
+          },
+          {
+            "id": "5d986ef101d24c8d",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-archive",
+              "title": "All properties"
+            }
+          },
+          {
+            "id": "d96d0c500c8222ba",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "README.md",
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Outline of README"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false,
+      "bases:Create new base": false
+    }
+  },
+  "active": "3fc9c894bfb53f74",
+  "lastOpenFiles": [
+    "gaia_cli/__pycache__/models.cpython-311.pyc.137217931781040",
+    "gateway/__pycache__/stream_consumer.cpython-311.pyc",
+    "gateway/__pycache__/stream_consumer.cpython-311.pyc.134699039029168",
+    "gateway/__pycache__/display_config.cpython-311.pyc",
+    "gateway/__pycache__/display_config.cpython-311.pyc.134699039022384",
+    "gaia_cli/__pycache__/nous_subscription.cpython-311.pyc.134495791311024",
+    "gaia_cli/nous_account.py",
+    "gaia_cli/nous_account.py.tmp.31431.42f5ce38e572",
+    "gaia_cli/nous_subscription.py",
+    "gaia_cli/nous_subscription.py.tmp.31431.4da28956a73f",
+    "__pycache__/run_agent.cpython-311.pyc.130653067436512",
+    "venv/lib/python3.11/site-packages/docstring_parser-0.18.0.dist-info/licenses/LICENSE.md",
+    "node_modules/@tabler/icons/categories/outline/Charts/chart-treemap.svg",
+    "node_modules/@tabler/icons/categories/outline/Charts/chart-scatter.svg",
+    "node_modules/@tabler/icons/categories/outline/Charts/chart-scatter-3d.svg",
+    "node_modules/@tabler/icons/categories/outline/Charts/chart-sankey.svg",
+    "node_modules/@tabler/icons/categories/outline/Charts/chart-radar.svg",
+    "node_modules/@tabler/icons/categories/outline/Charts/chart-ppf.svg",
+    "node_modules/@tabler/icons/categories/outline/Charts/chart-pie.svg",
+    "node_modules/@tabler/icons/categories/outline/Charts/chart-pie-off.svg",
+    "node_modules/@tabler/icons/categories/outline/Charts/chart-pie-4.svg",
+    "node_modules/@tabler/icons/categories/outline/Charts/chart-pie-3.svg",
+    "node_modules/@tabler/icons-react/README.md",
+    "node_modules/rxjs/README.md",
+    "node_modules/rxjs/CODE_OF_CONDUCT.md",
+    "node_modules/rxjs/CHANGELOG.md",
+    "node_modules/three/README.md",
+    "node_modules/three/examples/fonts/ttf/README.md",
+    "node_modules/three/examples/fonts/README.md",
+    "node_modules/mermaid/README.md",
+    "node_modules/@assistant-ui/react/src/legacy-runtime/runtime-cores/assistant-transport/useAssistantTransport.spec.md",
+    "node_modules/@assistant-ui/react/src/model-context/registry/SPEC_ModelContextRegistry.md",
+    "node_modules/@assistant-ui/react/src/model-context/frame/SPEC_AssistantFrame.md",
+    "node_modules/agent-browser/skills/agent-browser/SKILL.md",
+    "node_modules/agent-browser/skill-data/slack/templates/slack-report-template.md",
+    "node_modules/agent-browser/skill-data/slack/references/slack-tasks.md",
+    "node_modules/agent-browser/skill-data/dogfood/templates/dogfood-report-template.md",
+    "node_modules/agent-browser/skill-data/dogfood/references/issue-taxonomy.md",
+    "node_modules/agent-browser/skill-data/core/references/video-recording.md",
+    "node_modules/agent-browser/skill-data/core/references/snapshot-refs.md",
+    "node_modules/agent-browser/skill-data/core/references/session-management.md",
+    "node_modules/agent-browser/skill-data/core/references/proxy-support.md",
+    "node_modules/agent-browser/skill-data/core/references/profiling.md",
+    "node_modules/agent-browser/skill-data/core/references/commands.md",
+    "node_modules/agent-browser/skill-data/core/references/authentication.md",
+    "node_modules/agent-browser/skill-data/vercel-sandbox/SKILL.md"
+  ]
+}
